@@ -5,35 +5,79 @@
         </title>
         <script language="JavaScript">
             function getInputs (form) {
-                var nume = form.nume.value;
-                var prenume = form.prenume.value;
-                var email = form.email.value;
-                var gender = form.sex.value;
-                var data_nasterii = form.data_nasterii.value;
-                document.getElementById('nume').innerHTML = nume;
-                document.getElementById('prenume').innerHTML = prenume;
-                document.getElementById('email').innerHTML = email;
-                document.getElementById('gender').innerHTML = gender;
-                document.getElementById('data_nasterii').innerHTML = data_nasterii;
+                if (validateForm()) {
+                    var nume = form.nume.value;
+                    var prenume = form.prenume.value;
+                    var email = form.email.value;
+                    var gender = form.sex.value;
+                    var data_nasterii = form.data_nasterii.value;
+                    document.getElementById('nume').innerHTML = nume;
+                    document.getElementById('prenume').innerHTML = prenume;
+                    document.getElementById('email').innerHTML = email;
+                    document.getElementById('gender').innerHTML = gender;
+                    document.getElementById('data_nasterii').innerHTML = data_nasterii;
+                }
+            }
+            function validateForm() {
+                let x = document.forms["myForm"]["nume"].value;
+                if (x == "") {
+                    alert("Completati campul \'Nume\'");
+                    return false;
+                }
+                x = document.forms["myForm"]["prenume"].value;
+                if (x == "") {
+                    alert("Completati campul \'Prenume\'");
+                    return false;
+                }
+                x = document.forms["myForm"]["email"].value;
+                if (x == "" || !validateEmail(x)) {
+                    alert("\'Email\' invalid!");
+                    return false;
+                }
+                x = document.forms["myForm"]["sex"].value;
+                if (x == "") {
+                    alert("Completati campul \'Sex\'");
+                    return false;
+                }
+                x = document.forms["myForm"]["data_nasterii"].value;
+                if (x == "" || !validateDate(x)) {
+                    alert("\'Data nasterii\' invalida!");
+                    return false;
+                }
+                return true;
+            }
+            function validateEmail(email) {
+                const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+                return re.test(String(email));
+            }
+            function validateDate(myDate){
+                var before = new Date(myDate);
+                var now = new Date();
+                if(before <= now)
+                {
+                    return true;
+                }
+                return false;
             }
         </script>
     </head>
     <body>
         <form name="myForm" method="GET">
             Nume: <input type="text" name="nume">
-            <br>Prenume:
+            <br><br>Prenume:
             <input type="text" name="prenume">
-            <br>Email:
+            <br><br>Email:
             <input type="text" name="email">
-            <br>Sex:
+            <br><br>Sex:
             <select name="sex">
+                <option value=""></option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
                 <option value="Rather not say">Rather Not Say</option>
             </select>
-            <br>Data nasterii:
+            <br><br>Data nasterii:
             <input type="date" name="data_nasterii">
-            <br><input type="button" name="submit" Value="Send" onClick="getInputs(this.form)">
+            <br><br><input type="button" name="submit" Value="Send" onClick="getInputs(this.form)">
         </form>
         <table style="border: solid black;">
             <tr>
