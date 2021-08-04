@@ -5,16 +5,31 @@
         </title>
         <script language="JavaScript">
             function getInputs (form) {
-                var TestVar = form.nume.value;
-                alert ("You typed: " + TestVar);
+                var nume = form.nume.value;
+                var prenume = form.prenume.value;
+                var email = form.email.value;
+                var gender = form.sex.value;
+                var data_nasterii = form.data_nasterii.value;
+                console.log(nume + prenume + email + gender + data_nasterii);
             }
         </script>
     </head>
     <body>
         <form name="myForm" method="GET">
-            Enter something in the box: <br>
-            <input type="text" name="nume" value="Nume">
-            <input type="button" name="submit" Value="Send" onClick="getInputs(this.form)">
+            Nume: <input type="text" name="nume">
+            <br>Prenume:
+            <input type="text" name="prenume">
+            <br>Email:
+            <input type="text" name="email">
+            <br>Gender:
+            <select name="sex">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="rns">Rather Not Say</option>
+            </select>
+            <br>Data nasterii:
+            <input type="date" name="data_nasterii">
+            <br><input type="button" name="submit" Value="Send" onClick="getInputs(this.form)">
         </form>
     </body>
 </html>
