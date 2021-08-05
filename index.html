@@ -11,11 +11,7 @@
                     var email = form.email.value;
                     var gender = form.sex.value;
                     var data_nasterii = form.data_nasterii.value;
-                    document.getElementById('nume').innerHTML = nume;
-                    document.getElementById('prenume').innerHTML = prenume;
-                    document.getElementById('email').innerHTML = email;
-                    document.getElementById('gender').innerHTML = gender;
-                    document.getElementById('data_nasterii').innerHTML = data_nasterii;
+                    addRow("myTable", nume, prenume, email, gender, data_nasterii);
                 }
             }
             function validateForm() {
@@ -59,6 +55,35 @@
                 }
                 return false;
             }
+            function addRow(tableID, nume, prenume, email, gender, data_nasterii) {
+                var table = document.getElementById(tableID);
+
+                var rowCount = table.rows.length;
+                var row = table.insertRow(rowCount);
+
+                var cell1 = row.insertCell(0);
+                cell1.innerHTML = rowCount - 1;
+
+                var cell2 = row.insertCell(1);
+                var element1 = document.createTextNode(nume);
+                cell2.appendChild(element1);
+
+                var cell3 = row.insertCell(2);
+                var element2 = document.createTextNode(prenume);
+                cell3.appendChild(element2);
+
+                var cell4 = row.insertCell(3);
+                var element3 = document.createTextNode(email);
+                cell4.appendChild(element3);
+
+                var cell5 = row.insertCell(4);
+                var element4 = document.createTextNode(gender);
+                cell5.appendChild(element4);
+
+                var cell6 = row.insertCell(5);
+                var element5 = document.createTextNode(data_nasterii);
+                cell6.appendChild(element5);
+            }
         </script>
     </head>
     <body>
@@ -79,8 +104,9 @@
             <input type="date" name="data_nasterii">
             <br><br><input type="button" name="submit" Value="Send" onClick="getInputs(this.form)">
         </form>
-        <table style="border: solid black;">
+        <table id="myTable" style="border: solid black;">
             <tr>
+                <td>ID</td>
                 <td>Nume</td>
                 <td>Prenume</td>
                 <td>Email</td>
