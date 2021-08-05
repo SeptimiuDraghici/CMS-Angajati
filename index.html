@@ -86,11 +86,9 @@
 
                 var cell7 = row.insertCell(6);
                 var element6 = document.createElement("input");
-                element6.type = "button";
-                element6.value = "x";
-                element6.onclick= "deleteRow('myTable')";
+                element6.type = "checkbox";
+			    element6.name="chkbox[]";
                 cell7.appendChild(element6);
-
             }
         </script>
     </head>
@@ -129,5 +127,6 @@
                 <td id="data_nasterii"></td>
             </tr>
         </table>
+        <input type="button" value="Delete Employees" onclick="deleteRow('dataTable')"/>
     </body>
 </html>
