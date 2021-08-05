@@ -83,6 +83,14 @@
                 var cell6 = row.insertCell(5);
                 var element5 = document.createTextNode(data_nasterii);
                 cell6.appendChild(element5);
+
+                var cell7 = row.insertCell(6);
+                var element6 = document.createElement("input");
+                element6.type = "button";
+                element6.value = "x";
+                element6.onclick= "deleteRow('myTable')";
+                cell7.appendChild(element6);
+
             }
         </script>
     </head>
