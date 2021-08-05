@@ -11,9 +11,7 @@
                     var email = form.email.value;
                     var gender = form.sex.value;
                     var data_nasterii = form.data_nasterii.value;
-                    var img = form.imagine.value;
-                    console.log(img);
-                    addRow("myTable", nume, prenume, email, gender, data_nasterii, img);
+                    addRow("myTable", nume, prenume, email, gender, data_nasterii);
                 }
             }
             function validateForm() {
@@ -57,7 +55,7 @@
                 }
                 return false;
             }
-            function addRow(tableID, nume, prenume, email, gender, data_nasterii, img) {
+            function addRow(tableID, nume, prenume, email, gender, data_nasterii) {
                 var table = document.getElementById(tableID);
 
                 var rowCount = table.rows.length;
@@ -65,9 +63,13 @@
 
                 var cell1 = row.insertCell(0);
                 var element0 = document.createElement('img');
-                element0.src= img;
+                element0.id = "output";
                 element0.style="width: 50px; height: 50px;";
                 cell1.appendChild(element0);
+                var loadFile = function(event) {
+                    var image = document.getElementById('output');
+                    element0.src = URL.createObjectURL(event.target.files[0]);
+                };
 
                 var cell2 = row.insertCell(1);
                 var element1 = document.createTextNode(nume);
@@ -134,9 +136,9 @@
             </select>
             <br><br>Data nasterii:
             <input type="date" name="data_nasterii">
-            <br><br>Imagine:
-            <input type="file" name="imagine">
-            <br><br><input type="button" name="submit" Value="Send" onClick="getInputs(this.form)">
+            <p><label for="file" style="cursor: pointer;">Upload Image</label></p>
+            <input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)" style="display: none;">
+            <br><br><input type="button" name="submit" Value="Send" onClick="getInputs(this.form); loadFile(event);">
         </form>
         <table id="myTable" style="border: solid black;">
             <tr>
