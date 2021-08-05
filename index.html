@@ -96,9 +96,10 @@
                     var table = document.getElementById(tableID);
                     var rowCount = table.rows.length;
                     console.log(rowCount);
-                    for(var i=0; i<rowCount; i++) {
+                    for(var i=2; i<rowCount; i++) {
                         var row = table.rows[i];
-                        var chkbox = row.cells[6];
+                        var chkbox = row.cells[6].childNodes[0];
+                        console.log("chkbox: " + chkbox);
                         if(null != chkbox && true == chkbox.checked) {
                             console.log("Deleted")
                             table.deleteRow(i);
