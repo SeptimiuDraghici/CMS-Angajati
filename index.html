@@ -12,9 +12,7 @@
                     var email = form.email.value;
                     var gender = form.sex.value;
                     var data_nasterii = form.data_nasterii.value;
-                    console.log(moment());
                     data_nasterii = moment(data_nasterii).format("D MMMM YYYY");
-                    console.log(data_nasterii);
                     addRow("myTable", nume, prenume, email, gender, data_nasterii);
                 }
             }
