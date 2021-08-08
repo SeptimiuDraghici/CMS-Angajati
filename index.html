@@ -3,6 +3,7 @@
         <title>
             CMS Angajati
         </title>
+        <link rel="stylesheet" href="styles.css">
         <script src="lib/moment/moment.min.js"></script>
         <script language="JavaScript">
             function getInputs (form) {
@@ -86,37 +87,42 @@
         </script>
     </head>
     <body>
-        <form name="myForm" method="GET">
-            Nume: <input type="text" name="nume">
-            <br><br>Prenume:
-            <input type="text" name="prenume">
-            <br><br>Email:
-            <input type="text" name="email">
-            <br><br>Sex:
-            <select name="sex">
-                <option value=""></option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Rather not say">Rather Not Say</option>
-            </select>
-            <br><br>Data nasterii:
-            <input type="date" name="data_nasterii">
-            <br><br>Imagine:
-            <input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)">
-            <br><br><input type="button" name="submit" Value="Send" onClick="getInputs(this.form);">
-        </form>
-        <table id="myTable" style="border: solid black;">
-            <tr>
-                <td style="padding-right: 20px;">Picture</td>
-                <td>Nume</td>
-                <td>Prenume</td>
-                <td>Email</td>
-                <td>Sex</td>
-                <td>Data_nasterii</td>
-                <td>CheckBox_Delete</td>
-            </tr>
-        </table>
-        <input type="button" value="Delete Employees" onclick="deleteRow('myTable')"/>
+        <div class="form-div">
+            <form name="myForm" method="GET">
+                <label>Nume:</label>
+                <input type="text" name="nume">
+                <br><br><label>Prenume:</label>
+                <input type="text" name="prenume">
+                <br><br><label>Email:</label>
+                <input type="text" name="email">
+                <br><br><label>Sex:</label>
+                <select name="sex">
+                    <option value=""></option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Rather not say">Rather Not Say</option>
+                </select>
+                <br><br><label>Data nasterii:</label>
+                <input type="date" name="data_nasterii">
+                <br><br>Imagine:
+                <input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)">
+                <br><br><center><input class="send-button" type="button" name="submit" Value="Send" onClick="getInputs(this.form);"></center>
+            </form>
+        </div>
+        <div class = "table-div">
+            <table id="myTable" style="border: solid black; color:white;">
+                <tr>
+                    <td>Picture</td>
+                    <td>Nume</td>
+                    <td>Prenume</td>
+                    <td>Email</td>
+                    <td>Sex</td>
+                    <td>Data_nasterii</td>
+                    <td>CheckBox_Delete</td>
+                </tr>
+            </table>
+            <input class="delete-button" type="button" value="Delete Employees" onclick="deleteRow('myTable')"/>
+        </div>
         <script>
             let imgsrc = "";
             function addRow(tableID, nume, prenume, email, gender, data_nasterii) {
