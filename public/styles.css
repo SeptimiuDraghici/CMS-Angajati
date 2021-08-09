@@ -64,6 +64,10 @@ body {
     transition: border-color 0.2s;
 }
 
+.form-div option{
+    background-color: black;
+}
+
 .table-div {
     border: solid black;
     display: flex;
