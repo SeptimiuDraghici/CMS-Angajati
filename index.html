@@ -89,22 +89,22 @@
     <body>
         <div class="form-div">
             <form name="myForm" method="GET">
-                <label>Nume:</label>
+                <label>Nume:*</label>
                 <input type="text" name="nume">
-                <br><br><label>Prenume:</label>
+                <br><br><label>Prenume:*</label>
                 <input type="text" name="prenume">
-                <br><br><label>Email:</label>
+                <br><br><label>Email:*</label>
                 <input type="text" name="email">
-                <br><br><label>Sex:</label>
+                <br><br><label>Sex:*</label>
                 <select name="sex">
                     <option value=""></option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Rather not say">Rather Not Say</option>
                 </select>
-                <br><br><label>Data nasterii:</label>
+                <br><br><label>Data nasterii:*</label>
                 <input type="date" name="data_nasterii">
-                <br><br>Imagine:
+                <br><br>Imagine:*
                 <input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)">
                 <br><br><center><input class="send-button" type="button" name="submit" Value="Send" onClick="getInputs(this.form);"></center>
             </form>
@@ -117,8 +117,8 @@
                     <td>Prenume</td>
                     <td>Email</td>
                     <td>Sex</td>
-                    <td>Data_nasterii</td>
-                    <td>CheckBox_Delete</td>
+                    <td>Data nasterii</td>
+                    <td>CheckBox Delete</td>
                 </tr>
             </table>
             <input class="delete-button" type="button" value="Delete Employees" onclick="deleteRow('myTable')"/>
