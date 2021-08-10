@@ -35,6 +35,7 @@
             });
             function getInputs (form) {
                 if (validateForm()) {
+                    var ok = true;
                     var nume = form.nume.value;
                     var prenume = form.prenume.value;
                     var email = form.email.value;
@@ -49,18 +50,19 @@
                                     data = doc.data()
                                     console.log(data.email)
                                     if(data.email == email){
-                                        alert("Email already taken.");
-                                    }
-                                    else{
-                                        let angajat = new Angajat(nume, prenume, email, gender, data_nasterii,'img');
-                                        console.log(angajat);
-                                        InsertDB(angajat);
-                                        location.reload();
-                                        //addRow(angajat);
+                                        ok = false;
                                     }
                                 })
-                                
-                            });
+                                if(ok){
+                                    let angajat = new Angajat(nume, prenume, email, gender, data_nasterii,'img');
+                                    console.log(angajat);
+                                    InsertDB(angajat);
+                                    location.reload();
+                                }
+                                else{
+                                    alert("Email already taken.");
+                                }
+                        });
                 }
             }
             function validateForm() {
@@ -118,12 +120,13 @@
                     for(var i=1; i<rowCount; i++) {
                         var row = table.rows[i];
                         var chkbox = row.cells[6].childNodes[0];
-                        var email = row.cells[3].childNodes[0].toString();
+                        var email = row.cells[3].childNodes[0].nodeValue;
                         console.log("email: " + email);
                         if(null != chkbox && true == chkbox.checked) {
                             console.log("Deleted")
-                            db.collection("angajati").doc(email).delete().then(() => {
-                            console.log("Document successfully deleted!");
+                            db.collection("angajati").doc(email.toString()).delete().then(() => {
+                                console.log("Document successfully deleted!");
+                                location.reload();
                             }).catch((error) => {
                                 console.error("Error removing document: ", error);
                             });
@@ -199,6 +202,7 @@
 
                 var cell4 = row.insertCell(3);
                 var element3 = document.createTextNode(angajat.email);
+                element3.name = angajat.email;
                 cell4.appendChild(element3);
 
                 var cell5 = row.insertCell(4);
