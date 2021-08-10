@@ -3,18 +3,64 @@
         <title>
             CMS Angajati
         </title>
+        <!-- update the version number as needed -->
+        <script defer src="/__/firebase/8.9.0/firebase-app.js"></script>
+        <!-- include only the Firebase features as you need -->
+        <script defer src="/__/firebase/8.9.0/firebase-auth.js"></script>
+        <script defer src="/__/firebase/8.9.0/firebase-firestore.js"></script>
+        <script defer src="/__/firebase/8.9.0/firebase-functions.js"></script>
+        <script defer src="/__/firebase/8.9.0/firebase-messaging.js"></script>
+        <script defer src="/__/firebase/8.9.0/firebase-storage.js"></script>
+        <script defer src="/__/firebase/8.9.0/firebase-analytics.js"></script>
+        <script defer src="/__/firebase/8.9.0/firebase-remote-config.js"></script>
+        <script defer src="/__/firebase/8.9.0/firebase-performance.js"></script>
+        <script defer src="/__/firebase/init.js?useEmulator=true"></script>
         <link rel="stylesheet" href="styles.css">
         <script src="lib/moment/moment.min.js"></script>
         <script language="JavaScript">
+            document.addEventListener("DOMContentLoaded", event =>
+            {
+                const db = firebase.firestore();
+                const workRef = db.collection('angajati');
+                workRef.get()
+                    .then(doc => {
+                            doc.forEach(doc =>{
+                                data = doc.data()
+                                var table = document.getElementById("myTable");
+                                addRow(data)
+                                console.log(data)
+                            })
+                            
+                        });
+            });
             function getInputs (form) {
                 if (validateForm()) {
                     var nume = form.nume.value;
                     var prenume = form.prenume.value;
                     var email = form.email.value;
-                    var gender = form.sex.value;
+                    var gender = form.gender.value;
                     var data_nasterii = form.data_nasterii.value;
                     data_nasterii = moment(data_nasterii).format("D MMMM YYYY");
-                    addRow("myTable", nume, prenume, email, gender, data_nasterii);
+                    const db = firebase.firestore();
+                    const workRef = db.collection('angajati');
+                    workRef.get()
+                        .then(doc => {
+                                doc.forEach(doc =>{
+                                    data = doc.data()
+                                    console.log(data.email)
+                                    if(data.email == email){
+                                        alert("Email already taken.");
+                                    }
+                                    else{
+                                        let angajat = new Angajat(nume, prenume, email, gender, data_nasterii,'img');
+                                        console.log(angajat);
+                                        InsertDB(angajat);
+                                        location.reload();
+                                        //addRow(angajat);
+                                    }
+                                })
+                                
+                            });
                 }
             }
             function validateForm() {
@@ -33,9 +79,9 @@
                     alert("\'Email\' invalid!");
                     return false;
                 }
-                x = document.forms["myForm"]["sex"].value;
+                x = document.forms["myForm"]["gender"].value;
                 if (x == "") {
-                    alert("Completati campul \'Sex\'");
+                    alert("Completati campul \'Gender\'");
                     return false;
                 }
                 x = document.forms["myForm"]["data_nasterii"].value;
@@ -64,7 +110,7 @@
                 return false;
             }
             function deleteRow(tableID) {
-                
+                const db = firebase.firestore();
                 try {
                     var table = document.getElementById(tableID);
                     var rowCount = table.rows.length;
@@ -72,10 +118,15 @@
                     for(var i=1; i<rowCount; i++) {
                         var row = table.rows[i];
                         var chkbox = row.cells[6].childNodes[0];
-                        console.log("chkbox: " + chkbox);
+                        var email = row.cells[3].childNodes[0].toString();
+                        console.log("email: " + email);
                         if(null != chkbox && true == chkbox.checked) {
                             console.log("Deleted")
-                            table.deleteRow(i);
+                            db.collection("angajati").doc(email).delete().then(() => {
+                            console.log("Document successfully deleted!");
+                            }).catch((error) => {
+                                console.error("Error removing document: ", error);
+                            });
                             rowCount--;
                             i--;
                         }
@@ -95,8 +146,8 @@
                 <input type="text" name="prenume">
                 <br><br><label>Email:*</label>
                 <input type="text" name="email">
-                <br><br><label>Sex:*</label>
-                <select name="sex">
+                <br><br><label>Gender:*</label>
+                <select name="gender">
                     <option value=""></option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -116,7 +167,7 @@
                     <td>Nume</td>
                     <td>Prenume</td>
                     <td>Email</td>
-                    <td>Sex</td>
+                    <td>Gender</td>
                     <td>Data nasterii</td>
                     <td>CheckBox Delete</td>
                 </tr>
@@ -125,8 +176,8 @@
         </div>
         <script>
             let imgsrc = "";
-            function addRow(tableID, nume, prenume, email, gender, data_nasterii) {
-                var table = document.getElementById(tableID);
+            function addRow(angajat) {
+                var table = document.getElementById("myTable");
 
                 var rowCount = table.rows.length;
                 var row = table.insertRow(rowCount);
@@ -139,23 +190,23 @@
                 cell1.appendChild(element0);
 
                 var cell2 = row.insertCell(1);
-                var element1 = document.createTextNode(nume);
+                var element1 = document.createTextNode(angajat.nume);
                 cell2.appendChild(element1);
 
                 var cell3 = row.insertCell(2);
-                var element2 = document.createTextNode(prenume);
+                var element2 = document.createTextNode(angajat.prenume);
                 cell3.appendChild(element2);
 
                 var cell4 = row.insertCell(3);
-                var element3 = document.createTextNode(email);
+                var element3 = document.createTextNode(angajat.email);
                 cell4.appendChild(element3);
 
                 var cell5 = row.insertCell(4);
-                var element4 = document.createTextNode(gender);
+                var element4 = document.createTextNode(angajat.gender);
                 cell5.appendChild(element4);
 
                 var cell6 = row.insertCell(5);
-                var element5 = document.createTextNode(data_nasterii);
+                var element5 = document.createTextNode(angajat.data_nasterii);
                 cell6.appendChild(element5);
 
                 var cell7 = row.insertCell(6);
@@ -168,6 +219,31 @@
             var loadFile = function(event) {
                     imgsrc = URL.createObjectURL(event.target.files[0]);
                 };
+            
+            class Angajat{
+                constructor(nume, prenume, email, gender, data_nasterii, image){
+                    this.nume = nume;
+                    this.prenume = prenume;
+                    this.email = email;
+                    this.gender = gender;
+                    this.data_nasterii = data_nasterii;
+                    this.image = image;
+                }
+            }
+            function InsertDB(angajat){
+                const db = firebase.firestore();
+                data = {
+                    nume: angajat.nume,
+                    prenume: angajat.prenume,
+                    email: angajat.email,
+                    gender: angajat.gender,
+                    data_nasterii: angajat.data_nasterii
+                    //image: angajat.image
+                };
+                
+                // add 'data' to collection 'angajati'
+                res = db.collection('angajati').doc(angajat.email).set(data);
+            }
         </script>
     </body>
 </html>
