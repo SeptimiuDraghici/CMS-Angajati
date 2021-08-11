@@ -20,18 +20,7 @@
         <script language="JavaScript">
             document.addEventListener("DOMContentLoaded", event =>
             {
-                const db = firebase.firestore();
-                const workRef = db.collection('angajati');
-                workRef.get()
-                    .then(doc => {
-                            doc.forEach(doc =>{
-                                data = doc.data()
-                                var table = document.getElementById("myTable");
-                                addRow(data)
-                                console.log(data)
-                            })
-                            
-                        });
+                populateTable(document.getElementById("myTable"));
             });
             function getInputs (form) {
                 if (validateForm()) {
@@ -57,13 +46,33 @@
                                     let angajat = new Angajat(nume, prenume, email, gender, data_nasterii,'img');
                                     console.log(angajat);
                                     InsertDB(angajat);
-                                    location.reload();
+                                    populateTable(document.getElementById("myTable"));
                                 }
                                 else{
                                     alert("Email already taken.");
                                 }
                         });
                 }
+            }
+            function clearTable(table) {
+                var rows = table.rows;
+                var i = rows.length;
+                while (table.rows.length > 1) {
+                    table.deleteRow(1);
+                }
+            }
+            function populateTable(table){
+                clearTable(table);
+                const db = firebase.firestore();
+                const workRef = db.collection('angajati');
+                workRef.get()
+                    .then(doc => {
+                            doc.forEach(doc =>{
+                                data = doc.data()
+                                addRow(data)
+                            })
+                            
+                        });
             }
             function validateForm() {
                 let x = document.forms["myForm"]["nume"].value;
@@ -166,13 +175,13 @@
         <div class = "table-div">
             <table id="myTable" style="border: solid black; color:white;">
                 <tr>
-                    <td>Picture</td>
-                    <td>Nume</td>
-                    <td>Prenume</td>
-                    <td>Email</td>
-                    <td>Gender</td>
-                    <td>Data nasterii</td>
-                    <td>CheckBox Delete</td>
+                    <th>Picture</th>
+                    <th>Nume</th>
+                    <th>Prenume</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Data nasterii</th>
+                    <th>CheckBox Delete</th>
                 </tr>
             </table>
             <input class="delete-button" type="button" value="Delete Employees" onclick="deleteRow('myTable')"/>
@@ -234,7 +243,7 @@
                     this.image = image;
                 }
             }
-            function InsertDB(angajat){
+            async function InsertDB(angajat){
                 const db = firebase.firestore();
                 data = {
                     nume: angajat.nume,
@@ -246,7 +255,7 @@
                 };
                 
                 // add 'data' to collection 'angajati'
-                res = db.collection('angajati').doc(angajat.email).set(data);
+                res = await db.collection('angajati').doc(angajat.email).set(data);
             }
         </script>
     </body>
