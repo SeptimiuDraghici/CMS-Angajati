@@ -22,12 +22,18 @@
             {
                 populateTable(document.getElementById("myTable"));
             });
+            let file;
             function getInputs (form) {
                 if (validateForm()) {
                     var ok = true;
                     var nume = form.nume.value;
                     var prenume = form.prenume.value;
                     var email = form.email.value;
+                    var storageRef = firebase.storage().ref();
+                    var imageRef = storageRef.child(email);
+                    imageRef.put(file).then((snapshot) => {
+                        console.log('Uploaded a blob or file!');
+                    });
                     var gender = form.gender.value;
                     var data_nasterii = form.data_nasterii.value;
                     data_nasterii = moment(data_nasterii).format("D MMMM YYYY");
@@ -197,6 +203,13 @@
                 var cell1 = row.insertCell(0);
                 var element0 = document.createElement('img');
                 element0.src=imgsrc;
+                var storageRef = firebase.storage().ref();
+                var imageRef = storageRef.child(angajat.email);
+                imageRef.getDownloadURL().then(function(url){
+                    element0.src = url;
+                }).catch(function(error) {
+                    console.error(error);
+                });
                 element0.id = "output";
                 element0.style="width: 50px; height: 50px; border-radius: 100%";
                 cell1.appendChild(element0);
@@ -231,6 +244,9 @@
             
             var loadFile = function(event) {
                     imgsrc = URL.createObjectURL(event.target.files[0]);
+                    file = event.target.files[0];
+                    console.log(imgsrc);
+                    console.log(file);
                 };
             
             class Angajat{
