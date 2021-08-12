@@ -13,11 +13,26 @@ body {
     flex-direction: column;
 }
 
+.div-titlu {
+    width: 250px;
+    display: flex;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+.titlu-insert {
+    position: absolute;
+}
+.titlu-edit {
+    position: absolute;
+    display: none;
+}
+
 .form-div {
     align-items: center;
     display: flex;
     margin : 0 auto;
-    margin-top: 50px;
+    margin-top: 100px;
     color: wheat;
 }
 .form-div input[type="text"], input[type="date"], input[type="file"]{
@@ -33,16 +48,7 @@ body {
     transition: border-color 0.2s;
 }
 
-.delete-button {
-    width: fit-content;
-    margin-top: 10px;
-    background-color: rgb(255, 0, 0);
-    color: white;
-    font-size: 21px;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-}
-
-.send-button {
+.my-button {
     width: fit-content;
     margin-top: 10px;
     background-color: rgb(255, 0, 0);

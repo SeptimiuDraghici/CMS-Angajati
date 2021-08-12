@@ -23,8 +23,19 @@
                 populateTable(document.getElementById("myTable"));
             });
             let file;
+            var edit = false;
+            var old_email = "";
             function getInputs (form) {
                 if (validateForm()) {
+                    if(edit == true){
+                        const db = firebase.firestore();
+                        db.collection("angajati").doc(old_email.toString()).delete().then(() => {
+                            console.log("Document successfully deleted!");
+                            location.reload();
+                        }).catch((error) => {
+                            console.error("Error removing document: ", error);
+                        });
+                    }
                     var ok = true;
                     var nume = form.nume.value;
                     var prenume = form.prenume.value;
@@ -153,11 +164,29 @@
                     alert(e);
                 }
             }
+            function openForm(angajat){
+                edit = true;
+                //document.getElementById("myForm").style.display = "none";
+                document.getElementById("titlu-insert").style.display = "none";
+                document.getElementById("titlu-edit").style.display = "block";
+                console.log("opened form for: " + angajat.email);
+                var form = document.getElementById("myForm");
+                form.nume.value=angajat.nume;
+                form.prenume.value=angajat.prenume;
+                form.email.value=angajat.email;
+                form.gender.value=angajat.gender;
+                form.data_nasterii.value=angajat.data_nasterii;
+                old_email = angajat.email;
+            }
         </script>
     </head>
     <body>
+        <div class="div-titlu">
+            <h1 id="titlu-insert" class="titlu-insert">Insert Employee</h1>
+            <h1 id="titlu-edit" class="titlu-edit">Edit Employee</h1>
+        </div>
         <div class="form-div">
-            <form name="myForm" method="GET">
+            <form id="myForm" name="myForm" method="GET">
                 <label>Nume:*</label>
                 <input type="text" name="nume">
                 <br><br><label>Prenume:*</label>
@@ -175,7 +204,7 @@
                 <input type="date" name="data_nasterii">
                 <br><br>Imagine:*
                 <input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)">
-                <br><br><center><input class="send-button" type="button" name="submit" Value="Send" onClick="getInputs(this.form);"></center>
+                <br><br><center><input class="my-button" type="button" name="submit" Value="Send" onClick="getInputs(this.form);"></center>
             </form>
         </div>
         <div class = "table-div">
@@ -190,7 +219,7 @@
                     <th>CheckBox Delete</th>
                 </tr>
             </table>
-            <input class="delete-button" type="button" value="Delete Employees" onclick="deleteRow('myTable')"/>
+            <input class="my-button" type="button" value="Delete Employees" onclick="deleteRow('myTable')"/>
         </div>
         <script>
             let imgsrc = "";
@@ -238,8 +267,18 @@
                 var cell7 = row.insertCell(6);
                 var element6 = document.createElement("input");
                 element6.type = "checkbox";
-			    element6.name="chkbox[]";
+			    element6.name = "chkbox[]";
                 cell7.appendChild(element6);
+
+                var cell8 = row.insertCell(7);
+                var element7 = document.createElement("input");
+                element7.type = "button";
+                element7.class = "my-button";
+                element7.value = "Edit";
+                element7.addEventListener('click', function(){
+                    openForm(angajat);
+                });
+                cell8.appendChild(element7);
             }
             
             var loadFile = function(event) {
