@@ -42,12 +42,14 @@
                     var email = form.email.value;
                     var storageRef = firebase.storage().ref();
                     var imageRef = storageRef.child(email);
-                    imageRef.put(file).then((snapshot) => {
-                        console.log('Uploaded a blob or file!');
-                    });
+                    x = document.forms["myForm"]["image"].value;
+                    if (x != "") {
+                        imageRef.put(file).then((snapshot) => {
+                            console.log('Uploaded a blob or file!');
+                        });
+                    }
                     var gender = form.gender.value;
                     var data_nasterii = form.data_nasterii.value;
-                    data_nasterii = moment(data_nasterii).format("D MMMM YYYY");
                     const db = firebase.firestore();
                     const workRef = db.collection('angajati');
                     workRef.get()
@@ -78,7 +80,7 @@
                     table.deleteRow(1);
                 }
             }
-            function populateTable(table){
+            function populateTable(table) {
                 clearTable(table);
                 const db = firebase.firestore();
                 const workRef = db.collection('angajati');
@@ -118,8 +120,8 @@
                     return false;
                 }
                 x = document.forms["myForm"]["image"].value;
-                if (x == "") {
-                    alert("Introduceti o imagine!");
+                if (x == "" && !edit) {
+                    alert("Introduceti o poza!");
                     return false;
                 }
                 return true;
@@ -164,19 +166,35 @@
                     alert(e);
                 }
             }
-            function openForm(angajat){
+            function openForm(angajat) {
                 edit = true;
                 //document.getElementById("myForm").style.display = "none";
                 document.getElementById("titlu-insert").style.display = "none";
                 document.getElementById("titlu-edit").style.display = "block";
-                console.log("opened form for: " + angajat.email);
+                console.log("opened form for: " + angajat.data_nasterii);
                 var form = document.getElementById("myForm");
+                form.submit.value = "Edit";
+                form.cancel.style = "display: inline;";
                 form.nume.value=angajat.nume;
                 form.prenume.value=angajat.prenume;
                 form.email.value=angajat.email;
                 form.gender.value=angajat.gender;
                 form.data_nasterii.value=angajat.data_nasterii;
                 old_email = angajat.email;
+            }
+            function closeForm(){
+                edit=false;
+                document.getElementById("titlu-insert").style.display = "block";
+                document.getElementById("titlu-edit").style.display = "none";
+                var form = document.getElementById("myForm");
+                form.submit.value = "Send";
+                form.cancel.style = "display: none;";
+                form.nume.value="";
+                form.prenume.value="";
+                form.email.value="";
+                form.gender.value="";
+                form.data_nasterii.value="";
+                old_email = "";
             }
         </script>
     </head>
@@ -204,7 +222,8 @@
                 <input type="date" name="data_nasterii">
                 <br><br>Imagine:*
                 <input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)">
-                <br><br><center><input class="my-button" type="button" name="submit" Value="Send" onClick="getInputs(this.form);"></center>
+                <br><br><center><input class="my-button" type="button" name="submit" Value="Send" onClick="getInputs(this.form);">
+                <input id="cancel-button" class="my-button" type="button" name="cancel" value="Cancel" onclick="closeForm()"></center>
             </form>
         </div>
         <div class = "table-div">
@@ -241,40 +260,48 @@
                 });
                 element0.id = "output";
                 element0.style="width: 50px; height: 50px; border-radius: 100%";
+                cell1.style.textAlign = "center";
                 cell1.appendChild(element0);
 
                 var cell2 = row.insertCell(1);
                 var element1 = document.createTextNode(angajat.nume);
+                cell2.style.textAlign = "center";
                 cell2.appendChild(element1);
 
                 var cell3 = row.insertCell(2);
                 var element2 = document.createTextNode(angajat.prenume);
+                cell3.style.textAlign = "center";
                 cell3.appendChild(element2);
 
                 var cell4 = row.insertCell(3);
                 var element3 = document.createTextNode(angajat.email);
                 element3.name = angajat.email;
+                cell4.style.textAlign = "center";
                 cell4.appendChild(element3);
 
                 var cell5 = row.insertCell(4);
                 var element4 = document.createTextNode(angajat.gender);
+                cell5.style.textAlign = "center";
                 cell5.appendChild(element4);
 
                 var cell6 = row.insertCell(5);
-                var element5 = document.createTextNode(angajat.data_nasterii);
+                var data_nasterii = angajat.data_nasterii;
+                data_nasterii = moment(data_nasterii).format("D MMMM YYYY");
+                var element5 = document.createTextNode(data_nasterii);
+                cell6.style.textAlign = "center";
                 cell6.appendChild(element5);
 
                 var cell7 = row.insertCell(6);
                 var element6 = document.createElement("input");
                 element6.type = "checkbox";
-			    element6.name = "chkbox[]";
+                cell7.style.textAlign = "center";
                 cell7.appendChild(element6);
 
                 var cell8 = row.insertCell(7);
                 var element7 = document.createElement("input");
                 element7.type = "button";
-                element7.class = "my-button";
                 element7.value = "Edit";
+                element7.setAttribute('class', 'edit-button');
                 element7.addEventListener('click', function(){
                     openForm(angajat);
                 });
@@ -284,11 +311,11 @@
             var loadFile = function(event) {
                     imgsrc = URL.createObjectURL(event.target.files[0]);
                     file = event.target.files[0];
-                    console.log(imgsrc);
+                    console.log("if: " + imgsrc);
                     console.log(file);
                 };
             
-            class Angajat{
+            class Angajat {
                 constructor(nume, prenume, email, gender, data_nasterii, image){
                     this.nume = nume;
                     this.prenume = prenume;
@@ -298,7 +325,7 @@
                     this.image = image;
                 }
             }
-            async function InsertDB(angajat){
+            async function InsertDB(angajat) {
                 const db = firebase.firestore();
                 data = {
                     nume: angajat.nume,

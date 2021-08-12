@@ -57,6 +57,19 @@ body {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
+.edit-button{
+    width: fit-content;
+    background-color: rgb(255, 0, 0);
+    color: white;
+    font-size: 18px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+#cancel-button{
+    display: none;
+    flex-direction: row;
+}
+
 .form-div select {
     font-family: inherit;
     width: 100%;
