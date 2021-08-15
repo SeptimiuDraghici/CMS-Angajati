@@ -27,7 +27,7 @@
             var old_email = "";
             function getInputs (form) {
                 if (validateForm()) {
-                    if(edit == true){
+                    if(edit == true) {
                         const db = firebase.firestore();
                         db.collection("angajati").doc(old_email.toString()).delete().then(() => {
                             console.log("Document successfully deleted!");
@@ -54,20 +54,20 @@
                     const workRef = db.collection('angajati');
                     workRef.get()
                         .then(doc => {
-                                doc.forEach(doc =>{
+                                doc.forEach(doc => {
                                     data = doc.data()
                                     console.log(data.email)
                                     if(data.email == email){
                                         ok = false;
                                     }
                                 })
-                                if(ok){
+                                if(ok) {
                                     let angajat = new Angajat(nume, prenume, email, gender, data_nasterii,'img');
                                     console.log(angajat);
                                     InsertDB(angajat);
                                     populateTable(document.getElementById("myTable"));
                                 }
-                                else{
+                                else {
                                     alert("Email already taken.");
                                 }
                         });
@@ -86,7 +86,7 @@
                 const workRef = db.collection('angajati');
                 workRef.get()
                     .then(doc => {
-                            doc.forEach(doc =>{
+                            doc.forEach(doc => {
                                 data = doc.data()
                                 addRow(data)
                             })
@@ -130,11 +130,10 @@
                 const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
                 return re.test(String(email));
             }
-            function validateDate(myDate){
+            function validateDate(myDate) {
                 var before = new Date(myDate);
                 var now = new Date();
-                if(before <= now)
-                {
+                if(before <= now) {
                     return true;
                 }
                 return false;
@@ -173,7 +172,7 @@
                 document.getElementById("titlu-edit").style.display = "block";
                 console.log("opened form for: " + angajat.data_nasterii);
                 var form = document.getElementById("myForm");
-                form.submit.value = "Edit";
+                form.submit.value = "Save";
                 form.cancel.style = "display: inline;";
                 form.nume.value=angajat.nume;
                 form.prenume.value=angajat.prenume;
@@ -182,7 +181,7 @@
                 form.data_nasterii.value=angajat.data_nasterii;
                 old_email = angajat.email;
             }
-            function closeForm(){
+            function closeForm() {
                 edit=false;
                 document.getElementById("titlu-insert").style.display = "block";
                 document.getElementById("titlu-edit").style.display = "none";
@@ -200,42 +199,84 @@
     </head>
     <body>
         <div class="div-titlu">
-            <h1 id="titlu-insert" class="titlu-insert">Insert Employee</h1>
-            <h1 id="titlu-edit" class="titlu-edit">Edit Employee</h1>
+            <h1 id="titlu-insert" class="titlu-insert">
+                Insert Employee
+            </h1>
+            <h1 id="titlu-edit" class="titlu-edit">
+                Edit Employee
+            </h1>
         </div>
         <div class="form-div">
             <form id="myForm" name="myForm" method="GET">
-                <label>Nume:*</label>
+                <label>
+                    Nume:*
+                </label>
                 <input type="text" name="nume">
-                <br><br><label>Prenume:*</label>
+                <br><br>
+                <label>
+                    Prenume:*
+                </label>
                 <input type="text" name="prenume">
-                <br><br><label>Email:*</label>
+                <br><br>
+                <label>
+                    Email:*
+                </label>
                 <input type="text" name="email">
-                <br><br><label>Gender:*</label>
+                <br><br>
+                <label>
+                    Gender:*
+                </label>
                 <select name="gender">
                     <option value=""></option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Rather not say">Rather Not Say</option>
+                    <option value="Male">
+                        Male
+                    </option>
+                    <option value="Female">
+                        Female
+                    </option>
+                    <option value="Rather not say">
+                        Rather Not Say
+                    </option>
                 </select>
-                <br><br><label>Data nasterii:*</label>
+                <br><br>
+                <label>
+                    Data nasterii:*
+                </label>
                 <input type="date" name="data_nasterii">
-                <br><br>Imagine:*
+                <br><br>
+                Imagine:*
                 <input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)">
-                <br><br><center><input class="my-button" type="button" name="submit" Value="Send" onClick="getInputs(this.form);">
-                <input id="cancel-button" class="my-button" type="button" name="cancel" value="Cancel" onclick="closeForm()"></center>
+                <br><br>
+                <center>
+                    <input class="my-button" type="button" name="submit" Value="Send" onClick="getInputs(this.form);">
+                    <input id="cancel-button" class="my-button" type="button" name="cancel" value="Cancel" onclick="closeForm()">
+                </center>
             </form>
         </div>
         <div class = "table-div">
             <table id="myTable" style="border: solid black; color:white;">
                 <tr>
-                    <th>Picture</th>
-                    <th>Nume</th>
-                    <th>Prenume</th>
-                    <th>Email</th>
-                    <th>Gender</th>
-                    <th>Data nasterii</th>
-                    <th>CheckBox Delete</th>
+                    <th>
+                        Picture
+                    </th>
+                    <th>
+                        Nume
+                    </th>
+                    <th>
+                        Prenume
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Gender
+                    </th>
+                    <th>
+                        Data nasterii
+                    </th>
+                    <th>
+                        CheckBox Delete
+                    </th>
                 </tr>
             </table>
             <input class="my-button" type="button" value="Delete Employees" onclick="deleteRow('myTable')"/>
@@ -253,7 +294,7 @@
                 element0.src=imgsrc;
                 var storageRef = firebase.storage().ref();
                 var imageRef = storageRef.child(angajat.email);
-                imageRef.getDownloadURL().then(function(url){
+                imageRef.getDownloadURL().then(function(url) {
                     element0.src = url;
                 }).catch(function(error) {
                     console.error(error);
@@ -302,7 +343,7 @@
                 element7.type = "button";
                 element7.value = "Edit";
                 element7.setAttribute('class', 'edit-button');
-                element7.addEventListener('click', function(){
+                element7.addEventListener('click', function() {
                     openForm(angajat);
                 });
                 cell8.appendChild(element7);
@@ -316,7 +357,7 @@
                 };
             
             class Angajat {
-                constructor(nume, prenume, email, gender, data_nasterii, image){
+                constructor(nume, prenume, email, gender, data_nasterii, image) {
                     this.nume = nume;
                     this.prenume = prenume;
                     this.email = email;

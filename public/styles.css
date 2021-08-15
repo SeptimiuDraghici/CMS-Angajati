@@ -35,7 +35,7 @@ body {
     margin-top: 100px;
     color: wheat;
 }
-.form-div input[type="text"], input[type="date"], input[type="file"]{
+.form-div input[type="text"], input[type="date"], input[type="file"] {
     font-family: inherit;
     width: 100%;
     border: 0;
@@ -57,7 +57,7 @@ body {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
-.edit-button{
+.edit-button {
     width: fit-content;
     background-color: rgb(255, 0, 0);
     color: white;
@@ -65,7 +65,7 @@ body {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
-#cancel-button{
+#cancel-button {
     display: none;
     flex-direction: row;
 }
@@ -83,7 +83,7 @@ body {
     transition: border-color 0.2s;
 }
 
-.form-div option{
+.form-div option {
     background-color: black;
 }
 
